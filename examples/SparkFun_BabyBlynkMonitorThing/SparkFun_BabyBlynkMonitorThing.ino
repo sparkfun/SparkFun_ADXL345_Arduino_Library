@@ -74,8 +74,8 @@ WidgetLCD lcd(VIRTUAL_LCD);
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "sparkfun-guest";
-char pass[] = "sparkfun6333";
+char ssid[] = "INSERT NETWORK HERE";
+char pass[] = "INSERT PASSWORD HERE";
 
 SimpleTimer timer;
 
@@ -180,13 +180,13 @@ void loop()
       wentDownFlag = 0;                 // Reset flag if baby went back down   
       gotUpFlag = 0;                   
     }
+    sleepTime();                          // Time asleep
   } else {
     // do nothing                     
   }
 
   // Write number of times baby has gotten up to Blynk
   Blynk.virtualWrite(babyMoving, gotUp);
-  sleepTime();                          // Time aleep
 }
 
 /***************** BABY IS AWAKE ***************/
