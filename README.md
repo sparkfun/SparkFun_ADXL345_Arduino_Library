@@ -3,7 +3,7 @@ Sparkfun's I2C/SPI Arduino Library for ADXL345
 
 Using this Arduino Library, you have the option of using either SPI or I2C to communicate with the ADXL345.
 
-It is farely reasonable to use and straight forward.
+It is fairly reasonable to use and straight forward.
 
 You will also be able to calibrate the ADXL345 whenever necessary as shown in the example.
 
