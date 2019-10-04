@@ -791,6 +791,22 @@ bool ADXL345::getRegisterBit(byte regAdress, int bitPos) {
 	return ((_b >> bitPos) & 1);
 }
 
+/********************* FIFO CONFIG AND STATUS ***********************/
+/*  Setup ADXL345 to record data into a FIFO buffer to read later   */
+
+// Returns count of number of elements in the buffer to be read. Note this method is slow.
+int ADXL345::getFifoEntries()
+{
+	byte _b;
+	readFrom(ADXL345_FIFO_STATUS, 1, &_b);
+	return (_b & ADXL345_FIFO_MASK_ENTRIES);
+}
+
+void ADXL345::setFifoContol(byte value)
+{
+	writeTo(ADXL345_FIFO_CTL, value);
+}
+
 /********************************************************************/
 /*                                                                  */
 // Print Register Values to Serial Output =

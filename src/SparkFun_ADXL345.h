@@ -96,6 +96,15 @@ Arduino Uno
 #define ADXL345_WATERMARK				0x01
 #define ADXL345_OVERRUNY				0x00
 
+ /**************************** FIFO Config ****************************/
+#define ADXL345_FIFO_MODE_BYPASS		(0x00 << 6)
+#define ADXL345_FIFO_MODE_FIFO			(0x01 << 6)
+#define ADXL345_FIFO_MODE_STREAM		(0x02 << 6)
+#define ADXL345_FIFO_MODE_TRIGGER		(0x03 << 6)
+
+ /***************************** FIFO Mask ****************************/
+#define ADXL345_FIFO_MASK_ENTRIES		0x1F
+#define ADXL345_FIFO_MASK_TRIG			0x80	
 
  /****************************** ERRORS ******************************/
 #define ADXL345_OK			1		// No Error
