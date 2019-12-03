@@ -218,6 +218,10 @@ public:
 	void setJustifyBit(bool justifyBit);
 	void printAllRegister();
 	
+	void setFIFOMode(String FIFOMode);
+	byte getFIFOMode();
+	byte getFIFOStatus();
+	
 private:
 	void writeTo(byte address, byte val);
 	void writeToI2C(byte address, byte val);

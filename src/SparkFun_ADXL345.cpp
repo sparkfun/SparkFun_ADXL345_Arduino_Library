@@ -820,3 +820,34 @@ void print_byte(byte val){
 		Serial.print(val >> i & 1, BIN);
 	}
 }
+
+/********************** FIFO Control and Status *********************/
+/*                        Activates FIFO Modes                      */
+void ADXL345::setFIFOMode(String FIFOMode) {
+	if (FIFOMode == "FIFO") {
+		writeTo(ADXL345_FIFO_CTL, 95);
+	} else if (FIFOMode == "Stream") {
+		writeTo(ADXL345_FIFO_CTL, 159);
+	} else if(FIFOMode == "Trigger") {
+		writeTo(ADXL345_FIFO_CTL, 223);
+	} else { //Bypass Mode
+		writeTo(ADXL345_FIFO_CTL, 31);
+	}
+}
+
+byte ADXL345::getFIFOMode() {
+	byte control = 0;
+	for(int i=0; i<8; i++) {
+   		control |= getRegisterBit(ADXL345_FIFO_CTL, i) << i;
+	}
+	return control;
+}
+
+//returns number of data values stored in FIFO
+byte ADXL345::getFIFOStatus() {
+	byte numEntries = 0;
+	for(int i=0; i<6; i++) {
+   		numEntries |= getRegisterBit(ADXL345_FIFO_STATUS, i) << i;
+	}
+	return numEntries;
+}
