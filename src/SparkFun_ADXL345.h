@@ -61,7 +61,7 @@ Arduino Uno
 #define ADXL345_BW_100			0xB			// 1011		IDD = 140uA 
 #define ADXL345_BW_50			0xA			// 1010		IDD = 140uA
 #define ADXL345_BW_25			0x9			// 1001		IDD = 90uA
-#define ADXL345_BW_12_5		    0x8			// 1000		IDD = 60uA 
+#define ADXL345_BW_12_5		    	0x8			// 1000		IDD = 60uA 
 #define ADXL345_BW_6_25			0x7			// 0111		IDD = 50uA
 #define ADXL345_BW_3_13			0x6			// 0110		IDD = 45uA
 #define ADXL345_BW_1_56			0x5			// 0101		IDD = 40uA
@@ -96,6 +96,13 @@ Arduino Uno
 #define ADXL345_WATERMARK				0x01
 #define ADXL345_OVERRUNY				0x00
 
+ /********************** FIFO Mode **********************/
+#define ADXL345_FIFO_BYPASS				0x00
+#define ADXL345_FIFO_FIFO				0x01
+#define ADXL345_FIFO_STREAM				0x02
+#define ADXL345_FIFO_TRIGGER				0x03
+
+#define ADXL345_FIFO_TRIGGER_BIT			0x05
 
  /****************************** ERRORS ******************************/
 #define ADXL345_OK			1		// No Error
@@ -203,6 +210,19 @@ public:
 	void FreeFallINT(bool status);
 	void doubleTapINT(bool status);
 	void singleTapINT(bool status);
+	void WatermarkINT(bool status);
+	void OverrunINT(bool status);
+	
+	void setFIFO_Bypass();
+	void setFIFO_FIFO();
+	void setFIFO_Stream();
+	void setFIFO_Trigger();
+	void setTriggerBit(bool status);
+	bool getTriggerBit();
+	void setFifoSize(int samples);
+	int getFifoSize();
+	bool getTriggerStatus();
+	int getFifoEntries();
 	
 	void getRangeSetting(byte* rangeSetting);
 	void setRangeSetting(int val);
@@ -227,6 +247,7 @@ private:
 	void readFromSPI(byte address, int num, byte buff[]);
 	void setRegisterBit(byte regAdress, int bitPos, bool state);
 	bool getRegisterBit(byte regAdress, int bitPos);  
+	void setFIFO(byte fifo_mode_code);
 	byte _buff[6] ;		//	6 Bytes Buffer
 	int _CS = 10;
 	bool I2C = true;
