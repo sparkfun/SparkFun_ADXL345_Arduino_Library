@@ -773,6 +773,22 @@ void ADXL345::InactivityINT(bool status) {
 		setInterrupt( ADXL345_INT_INACTIVITY_BIT, 0);
 	}
 }
+void ADXL345::WatermarkINT(bool status) {
+	if(status) {
+		setInterrupt( ADXL345_WATERMARK, 1);
+	}
+	else {
+		setInterrupt( ADXL345_WATERMARK, 0);
+	}
+}
+void ADXL345::OverrunINT(bool status) {
+	if(status) {
+		setInterrupt( ADXL345_OVERRUNY, 1);
+	}
+	else {
+		setInterrupt( ADXL345_OVERRUNY, 0);
+	}
+}
 
 void ADXL345::setRegisterBit(byte regAdress, int bitPos, bool state) {
 	byte _b;
@@ -791,6 +807,66 @@ bool ADXL345::getRegisterBit(byte regAdress, int bitPos) {
 	readFrom(regAdress, 1, &_b);
 	return ((_b >> bitPos) & 1);
 }
+
+/*********************** FIFO **************************/
+void ADXL345::setFIFO(byte fifo_mode_code) {
+	byte _b;
+	readFrom(ADXL345_FIFO_CTL, 1, &_b);		//read current bits
+	_b &= B00111111;
+	_b |= (fifo_mode_code << 6);			
+	writeTo(ADXL345_FIFO_CTL, _b);
+}
+
+void ADXL345::setFIFO_Bypass(){
+	setFIFO(ADXL345_FIFO_BYPASS);
+}
+void ADXL345::setFIFO_FIFO(){
+	setFIFO(ADXL345_FIFO_FIFO);
+}
+void ADXL345::setFIFO_Stream(){
+	setFIFO(ADXL345_FIFO_STREAM);
+}
+void ADXL345::setFIFO_Trigger(){
+	setFIFO(ADXL345_FIFO_TRIGGER);
+}
+
+void ADXL345::setTriggerBit(bool status){
+	setRegisterBit(ADXL345_FIFO_CTL, ADXL345_FIFO_TRIGGER_BIT, status);
+}
+bool ADXL345::getTriggerBit(){
+	return getRegisterBit(ADXL345_FIFO_CTL, ADXL345_FIFO_TRIGGER_BIT);
+}
+
+void ADXL345::setFifoSize(int samples){
+	byte _b,_s;
+	if((samples<0 || samples>31)){
+		status = false;
+		error_code = ADXL345_BAD_ARG;
+	}
+	_s = (byte) samples;
+	readFrom(ADXL345_FIFO_CTL, 1, &_b);
+	_b &= B11100000;
+	_b |= _s;
+	writeTo(ADXL345_FIFO_CTL, _b);
+}
+int ADXL345::getFifoSize(){
+	byte _b;
+	readFrom(ADXL345_FIFO_CTL, 1, &_b);
+	_b &= B00011111;
+	return int (_b);
+}
+
+bool ADXL345::getTriggerStatus(){
+	return getRegisterBit(ADXL345_FIFO_STATUS, 7);
+}
+
+int ADXL345::getFifoEntries(){
+	byte _b;
+	readFrom(ADXL345_FIFO_STATUS, 1, &_b);
+	_b &= B00111111;
+	return int (_b);	
+}
+
 
 /********************************************************************/
 /*                                                                  */
