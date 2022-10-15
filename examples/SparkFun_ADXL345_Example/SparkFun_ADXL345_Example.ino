@@ -29,6 +29,7 @@ ADXL345 adxl = ADXL345(10);           // USE FOR SPI COMMUNICATION, ADXL345(CS_P
 /****************** INTERRUPT ******************/
 /*      Uncomment If Attaching Interrupt       */
 //int interruptPin = 2;                 // Setup pin 2 to be the interrupt pin (for most Arduino Boards)
+//bool interruptTrigger = false;        //True if triggered
 
 
 /******************** SETUP ********************/
@@ -81,7 +82,9 @@ void setup(){
   adxl.doubleTapINT(1);
   adxl.singleTapINT(1);
   
+//pinMode(interruptPin, INPUT_PULLUP);  //define pinmode of interrupt
 //attachInterrupt(digitalPinToInterrupt(interruptPin), ADXL_ISR, RISING);   // Attach Interrupt
+//adxl.getInterruptSource();  //refresh interrupt
 
 }
 
@@ -101,16 +104,21 @@ void loop(){
   //Serial.print(", ");
   //Serial.println(z); 
   
-  ADXL_ISR();
+  ADXL_ISR_READ();
   // You may also choose to avoid using interrupts and simply run the functions within ADXL_ISR(); 
   //  and place it within the loop instead.  
   // This may come in handy when it doesn't matter when the action occurs. 
 
+  /* uncomment for interrupt */
+//  if (interruptTrigger) {
+//    interruptTrigger = false;
+//    ADXL_ISR_READ();
+//  }
 }
 
 /********************* ISR *********************/
 /* Look for Interrupts and Triggered Action    */
-void ADXL_ISR() {
+void ADXL_ISR_READ() {
   
   // getInterruptSource clears all triggered actions after returning value
   // Do not call again until you need to recheck for triggered actions
@@ -145,5 +153,10 @@ void ADXL_ISR() {
     Serial.println("*** TAP ***");
      //add code here to do when a tap is sensed
   } 
+}
+
+void ADXL_ISR()
+{
+  interruptTrigger = True;
 }
 
