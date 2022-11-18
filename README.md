@@ -1,4 +1,6 @@
 # ADXL345
+[![Compile Examples](https://github.com/sparkfun/SparkFun_ADXL345_Arduino_Library/workflows/Compile%20Examples/badge.svg)](https://github.com/sparkfun/SparkFun_ADXL345_Arduino_Library/actions?workflow=Compile+Examples)
+
 Sparkfun's I2C/SPI Arduino Library for ADXL345
 
 Using this Arduino Library, you have the option of using either SPI or I2C to communicate with the ADXL345.
